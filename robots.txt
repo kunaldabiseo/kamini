@@ -1,0 +1,3 @@
+# Block all crawlers — this is a client preview, not for public discovery
+User-agent: *
+Disallow: /

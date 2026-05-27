@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FAQ — Kamini by Safe &amp; Sure (India)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="faq">
+
+<div id="site-header"></div>
+
+<main class="wide">
+  <section class="page-head">
+    <div class="crumb"><a href="index.html">Home</a> &nbsp;/&nbsp; FAQ</div>
+    <h1>Frequently <span class="italic">asked.</span></h1>
+    <p class="lede" style="margin-top:14px;max-width:60ch;">Quick answers about Kamini formulations, ordering, shipping and consultations. Can't find your question? <a href="contact.html" style="text-decoration:underline;">Write to us</a>.</p>
+  </section>
+
+  <div class="faq-list" id="faq"></div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="app.js"></script>
+<script>
+const FAQS = [
+  ["Are Kamini products genuine classical Ayurvedic medicine?",
+   "Yes. Every Kamini formulation is manufactured under AYUSH Mfg. Lic. No. 625-Ayu by Safe &amp; Sure (India) in Bengaluru. Each pack carries the licence number, batch code and expiry date. Where applicable, we reference the classical Ayurvedic text the formulation comes from."],
+  ["Do I need a doctor's prescription to buy Kamini?",
+   "Kamini products are classified as Ayurvedic Proprietary Medicine and can be purchased without a prescription. That said, we strongly recommend a consultation with a registered Ayurvedic physician (BAMS) — especially for cardiac, blood-pressure or rejuvenation formulations. Book a free vaidya call from the <a href='contact.html'>contact page</a>."],
+  ["How long until I see results?",
+   "Classical Ayurveda works in cycles. Acute issues (cough, indigestion, pain) may respond within 5 – 14 days. Chronic concerns (heart, BP, women's health) typically need a 6 – 12 week course. Your vaidya will set the right expectations during a consultation."],
+  ["Can Kamini products be taken alongside allopathic medicine?",
+   "In most cases yes, but please consult both your allopathic doctor and an Ayurvedic physician before combining therapies — particularly for blood-pressure, anti-diabetic or anti-coagulant medication."],
+  ["Are there any side effects?",
+   "Classical Ayurvedic formulations, when taken at recommended doses, are generally well tolerated. Mild digestive adjustment in the first few days is normal. Discontinue use and contact a vaidya if you observe any unexpected reaction."],
+  ["What's the difference between Vati, Gutika and Ras?",
+   "All three are tablet-form preparations in classical Ayurveda. <b>Vati</b> is typically herbal, <b>Gutika</b> includes specific bhasmas alongside herbs, and <b>Ras</b> denotes mineral-based formulations prepared with elaborate shodhan (purification). All Kamini formulations strictly follow the classical preparation process for their type."],
+  ["How should I store my Kamini packs?",
+   "Store in a cool, dry place, away from direct sunlight and out of reach of children. Keep the foil pack sealed; close the outer carton tightly after each use. Once opened, use within the expiry date printed on the pack."],
+  ["Is shipping really free?",
+   "Yes, on all orders over ₹1,000 anywhere in India. Below ₹1,000, a flat ₹60 shipping fee applies. See our <a href='shipping-policy.html'>full shipping policy</a> for delivery timelines."],
+  ["When will my order arrive?",
+   "Most metros receive their orders in 2 – 4 working days after dispatch. Tier-2 cities in 3 – 6 days, and other locations in 5 – 9 days. North-Eastern states and far-off islands take 7 – 12 days. You'll receive a tracking link as soon as it ships."],
+  ["Do you offer Cash on Delivery?",
+   "Yes, on orders up to ₹5,000 in serviceable pin codes. A ₹30 COD handling fee applies. For orders above ₹2,500 we may call once to confirm before dispatch — this is a fraud-prevention measure, not an inconvenience."],
+  ["Can I return an opened Kamini pack?",
+   "Unfortunately no. Once a medicine pack is opened it cannot be re-sold for safety reasons. We accept returns of unopened, sealed packs within 7 days of delivery, and we replace damaged-in-transit packs at no cost (please record a video while unboxing). See the <a href='refund-policy.html'>refund policy</a>."],
+  ["Do you offer wholesale or distributorship?",
+   "Yes — we work with select Ayurvedic clinics, pharmacies and modern wellness retailers across India. Write to <a href='mailto:partners@safensure-india.com'>partners@safensure-india.com</a> or use the form on our <a href='contact.html'>contact page</a>."],
+  ["Do you ship internationally?",
+   "We currently ship within India only. International enquiries: email <a href='mailto:care@safensure-india.com'>care@safensure-india.com</a> with your product list and address, and we'll respond with a custom quote."],
+  ["I forgot my password / can't log in.",
+   "Use the 'Forgot password' link on the sign-in page (coming soon in the live store). For immediate help, message us on WhatsApp at +91 82902 68414 with your registered email and we'll reset it within an hour during business hours."]
+];
+
+document.getElementById('faq').innerHTML = FAQS.map(([q, a]) => `
+  <div class="faq-item">
+    <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">${q}</button>
+    <div class="faq-a"><p>${a}</p></div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>

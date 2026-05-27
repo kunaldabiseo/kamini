@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkout — Kamini by Safe &amp; Sure (India)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="checkout">
+
+<div id="site-header"></div>
+
+<main class="wide">
+  <section class="page-head">
+    <div class="crumb"><a href="index.html">Home</a> &nbsp;/&nbsp; <a href="cart.html">Bag</a> &nbsp;/&nbsp; Checkout</div>
+    <h1>Secure <span class="italic">checkout.</span></h1>
+  </section>
+
+  <div id="checkout-root"></div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="app.js"></script>
+<script>
+function renderCheckout() {
+  const cart = getCart();
+  const root = document.getElementById('checkout-root');
+  if (!cart.length) {
+    root.innerHTML = `
+      <div class="cart-empty">
+        <h2 class="h-section serif">Nothing to <span class="italic" style="color:var(--saffron);">check out.</span></h2>
+        <p class="lede" style="text-align:center;">Your bag is empty. Add a formulation to continue.</p>
+        <a class="btn btn-dark" href="shop.html">Shop all formulations →</a>
+      </div>`;
+    return;
+  }
+  const t = cartTotals();
+  root.innerHTML = `
+    <div class="checkout-layout">
+      <form class="checkout-form" onsubmit="event.preventDefault();placeOrder();">
+
+        <div class="fieldset">
+          <h3>Contact</h3>
+          <div class="field full"><label>Email</label><input type="email" required placeholder="your@email.com" /></div>
+          <div class="field full"><label>Phone (WhatsApp)</label><input type="tel" required placeholder="+91 98xxx xxxxx" pattern="[0-9 +]{10,14}" /></div>
+        </div>
+
+        <div class="fieldset">
+          <h3>Shipping address</h3>
+          <div class="field-row">
+            <div class="field"><label>First name</label><input type="text" required /></div>
+            <div class="field"><label>Last name</label><input type="text" required /></div>
+          </div>
+          <div class="field"><label>Address line 1</label><input type="text" required placeholder="House / flat number, street" /></div>
+          <div class="field"><label>Address line 2 (optional)</label><input type="text" placeholder="Landmark, area" /></div>
+          <div class="field-row">
+            <div class="field"><label>City</label><input type="text" required /></div>
+            <div class="field"><label>State</label>
+              <select required>
+                <option value="">Select state</option>
+                <option>Karnataka</option><option>Maharashtra</option><option>Delhi</option>
+                <option>Tamil Nadu</option><option>West Bengal</option><option>Gujarat</option>
+                <option>Rajasthan</option><option>Uttar Pradesh</option><option>Madhya Pradesh</option>
+                <option>Andhra Pradesh</option><option>Telangana</option><option>Kerala</option>
+                <option>Odisha</option><option>Punjab</option><option>Haryana</option><option>Bihar</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>PIN code</label><input type="text" required pattern="[0-9]{6}" placeholder="6-digit" /></div>
+            <div class="field"><label>Country</label><input type="text" value="India" readonly /></div>
+          </div>
+        </div>
+
+        <div class="fieldset">
+          <h3>Payment</h3>
+          <div class="pay-options">
+            <label class="pay-option active">
+              <input type="radio" name="pay" checked value="upi" onchange="setPay(this)"/>
+              <span class="p-name">UPI · GPay / PhonePe / Paytm</span>
+              <span class="p-tag">Instant</span>
+            </label>
+            <label class="pay-option">
+              <input type="radio" name="pay" value="card" onchange="setPay(this)"/>
+              <span class="p-name">Credit / Debit card</span>
+              <span class="p-tag">Razorpay</span>
+            </label>
+            <label class="pay-option">
+              <input type="radio" name="pay" value="netbanking" onchange="setPay(this)"/>
+              <span class="p-name">Net banking</span>
+              <span class="p-tag">All major banks</span>
+            </label>
+            <label class="pay-option">
+              <input type="radio" name="pay" value="cod" onchange="setPay(this)"/>
+              <span class="p-name">Cash on delivery</span>
+              <span class="p-tag">+ ₹30 handling</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-dark" style="width:100%;height:64px;font-size:13px;">
+          Place order · ${inr(t.total)}
+        </button>
+
+        <p style="font-size:12px;color:var(--mute);text-align:center;">
+          By placing this order you agree to our <a href="terms-conditions.html" style="text-decoration:underline;">Terms</a>
+          and <a href="privacy-policy.html" style="text-decoration:underline;">Privacy Policy</a>.
+        </p>
+      </form>
+
+      <aside class="summary">
+        <h3>Order summary</h3>
+        <div class="mini-items">
+          ${cart.map(i => {
+            const p = findProduct(i.slug);
+            if (!p) return '';
+            return `
+              <div class="mini-item">
+                <div class="mi-img">
+                  <img src="${p.image}" alt="${p.name}"/>
+                  <span class="qty">${i.qty}</span>
+                </div>
+                <div>
+                  <div class="mi-name">${p.name}</div>
+                  <div class="mi-sub">${p.weight}</div>
+                </div>
+                <div class="mi-price">${inr(p.price * i.qty)}</div>
+              </div>`;
+          }).join('')}
+        </div>
+        <div class="sum-row"><span>Subtotal</span><span>${inr(t.subtotal)}</span></div>
+        <div class="sum-row"><span>GST (5%)</span><span>${inr(t.tax)}</span></div>
+        <div class="sum-row"><span>Shipping</span><span>${t.shipping === 0 ? 'Free' : inr(t.shipping)}</span></div>
+        ${t.saved ? `<div class="sum-row" style="color:var(--saffron);"><span>You saved</span><span style="font-weight:700;">− ${inr(t.saved)}</span></div>` : ''}
+        <div class="sum-row total"><span>Total</span><span>${inr(t.total)}</span></div>
+        <div class="note">
+          🔒 Encrypted checkout. Your details are not stored on the device after order completion.
+        </div>
+      </aside>
+    </div>`;
+}
+
+function setPay(input) {
+  document.querySelectorAll('.pay-option').forEach(o => o.classList.toggle('active', o.contains(input)));
+}
+
+function placeOrder() {
+  const cart = getCart();
+  if (!cart.length) return;
+  const t = cartTotals();
+  const ord = {
+    id: 'KAM' + Date.now().toString().slice(-8),
+    items: cart,
+    totals: t,
+    placed: new Date().toISOString()
+  };
+  localStorage.setItem('kamini_last_order', JSON.stringify(ord));
+  // Save to order history
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('kamini_orders') || '[]'); } catch {}
+  history.unshift(ord);
+  localStorage.setItem('kamini_orders', JSON.stringify(history.slice(0, 20)));
+  // Clear cart
+  setCart([]);
+  // Success
+  location.href = 'order-success.html';
+}
+
+renderCheckout();
+</script>
+</body>
+</html>

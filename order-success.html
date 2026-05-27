@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Order placed — Kamini by Safe &amp; Sure (India)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="success">
+
+<div id="site-header"></div>
+
+<main class="wide">
+  <div class="success" id="success-root"></div>
+
+  <section class="section-pad" style="padding-top:0;border-top:1px solid var(--hairline);">
+    <div class="sec-head reveal">
+      <div class="left">
+        <span class="eyebrow">While you wait</span>
+        <h2 class="h-section serif">Other formulations<br/><span class="italic" style="color:var(--saffron);">to consider.</span></h2>
+      </div>
+    </div>
+    <div id="related-grid" class="product-grid"></div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="app.js"></script>
+<script>
+let ord = null;
+try { ord = JSON.parse(localStorage.getItem('kamini_last_order') || 'null'); } catch {}
+
+const root = document.getElementById('success-root');
+if (!ord) {
+  root.innerHTML = `
+    <div class="checkmark">✓</div>
+    <span class="ord-no">No active order</span>
+    <h1>Welcome to <span class="italic">Kamini.</span></h1>
+    <p class="lede" style="text-align:center;">Visit the shop to place an order.</p>
+    <a class="btn btn-dark" href="shop.html">Shop formulations →</a>`;
+} else {
+  const date = new Date(ord.placed);
+  const eta = new Date(date.getTime() + 5 * 24 * 3600 * 1000);
+  const fmt = d => d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  root.innerHTML = `
+    <div class="checkmark">✓</div>
+    <span class="ord-no">Order ${ord.id}</span>
+    <h1>Thank you — your order<br/>is <span class="italic">on its way.</span></h1>
+    <p class="lede" style="text-align:center;max-width:50ch;">
+      We've sent a confirmation to your inbox. Expected delivery by
+      <b style="color:var(--ink);">${fmt(eta)}</b>. You can track this order from
+      <a href="account.html" style="text-decoration:underline;">My Account</a>.
+    </p>
+
+    <div class="success-card">
+      <div class="row between" style="font-family:var(--serif);"><span>Order</span><b>${ord.id}</b></div>
+      <div class="row between"><span>Placed</span><span>${fmt(date)}</span></div>
+      <div class="row between"><span>Items</span><span>${ord.totals.count}</span></div>
+      <div class="row between"><span>Subtotal</span><span>${inr(ord.totals.subtotal)}</span></div>
+      <div class="row between"><span>GST</span><span>${inr(ord.totals.tax)}</span></div>
+      <div class="row between"><span>Shipping</span><span>${ord.totals.shipping === 0 ? 'Free' : inr(ord.totals.shipping)}</span></div>
+      <div class="row between" style="font-family:var(--serif);font-size:22px;padding-top:10px;border-top:1px solid var(--hairline);"><span>Total paid</span><b>${inr(ord.totals.total)}</b></div>
+    </div>
+
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <a class="btn btn-dark" href="shop.html">Continue shopping</a>
+      <a class="btn btn-outline" href="account.html">Track this order</a>
+    </div>`;
+}
+
+document.getElementById('related-grid').innerHTML = PRODUCTS.slice(0, 4).map(productCardHTML).join('');
+</script>
+</body>
+</html>

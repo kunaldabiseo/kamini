@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact — Kamini by Safe &amp; Sure (India)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="contact">
+
+<div id="site-header"></div>
+
+<main class="wide">
+  <section class="page-head">
+    <div class="crumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Contact</div>
+    <h1>Reach <span class="italic">us.</span></h1>
+    <p class="lede" style="margin-top:14px;max-width:60ch;">
+      Customer support, vaidya consultations, distributorship enquiries, or
+      a question about a specific formulation — write to us and we'll respond within one working day.
+    </p>
+  </section>
+
+  <div class="contact-grid">
+    <!-- Form -->
+    <form class="contact-card" onsubmit="event.preventDefault();document.getElementById('contact-ok').style.display='block';this.reset();">
+      <h3 class="h-block serif">Send us a note</h3>
+      <p style="font-size:14px;color:var(--ink-2);">We read every message. Responses within 24 hours, Mon–Sat.</p>
+      <div class="field-row" style="margin-top:8px;">
+        <div class="field"><label>Name</label><input type="text" required /></div>
+        <div class="field"><label>Phone</label><input type="tel" required /></div>
+      </div>
+      <div class="field"><label>Email</label><input type="email" required /></div>
+      <div class="field"><label>Topic</label>
+        <select required>
+          <option value="">Choose one</option>
+          <option>Order / shipping question</option>
+          <option>Product / dosage advice</option>
+          <option>Vaidya consultation booking</option>
+          <option>Distributorship enquiry</option>
+          <option>Wholesale / pharmacy</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label>Message</label><textarea rows="5" required></textarea></div>
+      <button type="submit" class="btn btn-dark" style="margin-top:8px;">Send message <span class="btn-arrow">→</span></button>
+      <p id="contact-ok" style="display:none;color:var(--saffron);font-weight:600;font-size:14px;">✓ Message received. We'll respond shortly.</p>
+    </form>
+
+    <!-- Info column -->
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div class="contact-card">
+        <h3 class="h-block serif">Visit us</h3>
+        <p style="margin:0;font-family:var(--serif);font-size:18px;line-height:1.6;">
+          SAFE &amp; SURE (INDIA)<br/>
+          Gandhinagar, Keshapura,<br/>
+          Bhoogani, Bengaluru — 307027<br/>
+          Karnataka, India
+        </p>
+        <p style="margin:14px 0 0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);">Mon — Sat · 10 AM to 7 PM</p>
+      </div>
+      <div class="contact-card">
+        <h3 class="h-block serif">Customer care</h3>
+        <p style="margin:0;font-size:15px;">
+          <b>Phone / WhatsApp:</b><br/>
+          <a href="tel:+918290268414" style="font-family:var(--serif);font-size:22px;color:var(--ink);text-decoration:none;">+91 82902 68414</a>
+        </p>
+        <p style="margin:14px 0 0;font-size:15px;">
+          <b>Email:</b><br/>
+          <a href="mailto:care@safensure-india.com" style="color:var(--ink);text-decoration:underline;">care@safensure-india.com</a>
+        </p>
+        <p style="margin:14px 0 0;font-size:15px;">
+          <b>Distributorship:</b><br/>
+          <a href="mailto:partners@safensure-india.com" style="color:var(--ink);text-decoration:underline;">partners@safensure-india.com</a>
+        </p>
+      </div>
+      <div class="contact-card" style="background:var(--ink);color:var(--paper);">
+        <h3 class="h-block serif" style="color:var(--paper);">Book a vaidya consultation</h3>
+        <p style="margin:0;color:rgba(255,255,255,.78);">
+          A 20-minute call with one of our partnered Ayurvedic physicians for
+          a personalised prakriti reading and a formulation plan.
+        </p>
+        <a class="btn btn-gold" href="#" style="margin-top:12px;">Book a call <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

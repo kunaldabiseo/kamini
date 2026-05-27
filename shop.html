@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shop · All Formulations — Kamini by Safe &amp; Sure (India)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="shop">
+
+<div id="site-header"></div>
+
+<main class="wide">
+
+  <!-- ============== HEAD ============== -->
+  <section class="page-head">
+    <div class="crumb"><a href="index.html">Home</a> &nbsp;/&nbsp; <span id="bc-active">All Formulations</span></div>
+    <h1><span id="shop-title">All Formulations.</span><br/><span class="italic" id="shop-sub">Classical, eleven strong.</span></h1>
+    <p class="lede" style="margin-top:18px;max-width:60ch;" id="shop-lede">
+      The complete Kamini line — vati, gutika and ras formulations,
+      manufactured under Lic. No. 625-Ayu by Safe &amp; Sure (India).
+    </p>
+  </section>
+
+  <!-- ============== CHIPS ============== -->
+  <div class="shop-chips" id="chips"></div>
+
+  <!-- ============== LAYOUT ============== -->
+  <div class="shop-layout">
+
+    <!-- Sidebar -->
+    <aside class="shop-filters">
+      <div class="filter-group">
+        <h5>Concern</h5>
+        <ul id="filter-concern"></ul>
+      </div>
+      <div class="filter-group">
+        <h5>Format</h5>
+        <ul id="filter-format">
+          <li><label><input type="checkbox" value="vati" data-filter="category"/> Vati <span class="ct">8</span></label></li>
+          <li><label><input type="checkbox" value="gutika" data-filter="category"/> Gutika <span class="ct">2</span></label></li>
+          <li><label><input type="checkbox" value="ras" data-filter="category"/> Ras <span class="ct">1</span></label></li>
+        </ul>
+      </div>
+      <div class="filter-group">
+        <h5>Price</h5>
+        <ul>
+          <li><label><input type="checkbox" value="0-250" data-filter="price"/> Under ₹250</label></li>
+          <li><label><input type="checkbox" value="250-350" data-filter="price"/> ₹250 – ₹350</label></li>
+          <li><label><input type="checkbox" value="350-9999" data-filter="price"/> Over ₹350</label></li>
+        </ul>
+      </div>
+      <div class="filter-group">
+        <h5>Rating</h5>
+        <ul>
+          <li><label><input type="checkbox" value="4.8" data-filter="rating"/> 4.8 &amp; above</label></li>
+          <li><label><input type="checkbox" value="4.5" data-filter="rating"/> 4.5 &amp; above</label></li>
+        </ul>
+      </div>
+      <div class="filter-group">
+        <button class="btn btn-outline" style="width:100%;height:42px;font-size:11px;" onclick="clearFilters()">Reset filters</button>
+      </div>
+    </aside>
+
+    <!-- Grid -->
+    <div>
+      <div class="shop-toolbar">
+        <div class="count" id="grid-count">11 formulations</div>
+        <select id="sort">
+          <option value="featured">Sort: Featured</option>
+          <option value="price-asc">Price: Low to high</option>
+          <option value="price-desc">Price: High to low</option>
+          <option value="rating">Rating</option>
+          <option value="name">Name (A–Z)</option>
+        </select>
+      </div>
+      <div id="shop-grid" class="product-grid cols-3"></div>
+      <div id="empty-state" style="display:none;text-align:center;padding:80px;color:var(--mute);">
+        <p style="font-family:var(--italic);font-style:italic;font-size:22px;color:var(--ink);">No formulations match those filters.</p>
+        <button class="btn btn-outline" style="margin-top:18px;" onclick="clearFilters()">Reset filters</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="app.js"></script>
+<script>
+const url = new URL(location.href);
+const initialConcern = url.searchParams.get('c');
+const state = {
+  chip: initialConcern || 'all',
+  filters: { concern: new Set(initialConcern ? [initialConcern] : []), category: new Set(), price: new Set(), rating: new Set() },
+  sort: 'featured'
+};
+
+// Render chips (concerns)
+const chipsHTML = ['<button class="chip ' + (state.chip==='all'?'active':'') + '" data-chip="all">All <span class="chip-count">' + PRODUCTS.length + '</span></button>']
+  .concat(CONCERNS.map(c => {
+    const n = PRODUCTS.filter(p => p.concern === c.name).length;
+    return `<button class="chip ${state.chip===c.name?'active':''}" data-chip="${c.name}">${c.name} <span class="chip-count">${n}</span></button>`;
+  })).join('');
+document.getElementById('chips').innerHTML = chipsHTML;
+document.querySelectorAll('.chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.chip = btn.dataset.chip;
+    document.querySelectorAll('.chip').forEach(b => b.classList.toggle('active', b===btn));
+    if (state.chip === 'all') state.filters.concern = new Set();
+    else state.filters.concern = new Set([state.chip]);
+    syncConcernCheckboxes();
+    render();
+  });
+});
+
+// Render concern filter checkboxes
+document.getElementById('filter-concern').innerHTML = CONCERNS.map(c => {
+  const n = PRODUCTS.filter(p => p.concern === c.name).length;
+  return `<li><label><input type="checkbox" value="${c.name}" data-filter="concern" ${state.filters.concern.has(c.name)?'checked':''}/> ${c.name} <span class="ct">${n}</span></label></li>`;
+}).join('');
+
+document.querySelectorAll('input[data-filter]').forEach(inp => {
+  inp.addEventListener('change', () => {
+    const set = state.filters[inp.dataset.filter];
+    if (inp.checked) set.add(inp.value); else set.delete(inp.value);
+    if (inp.dataset.filter === 'concern') {
+      // sync chip
+      if (set.size === 1) {
+        state.chip = [...set][0];
+      } else state.chip = 'all';
+      document.querySelectorAll('.chip').forEach(b => b.classList.toggle('active', b.dataset.chip === state.chip || (state.chip==='all' && b.dataset.chip==='all')));
+    }
+    render();
+  });
+});
+
+function syncConcernCheckboxes() {
+  document.querySelectorAll('input[data-filter="concern"]').forEach(inp => {
+    inp.checked = state.filters.concern.has(inp.value);
+  });
+}
+
+document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; render(); });
+
+function clearFilters() {
+  state.chip = 'all';
+  Object.values(state.filters).forEach(s => s.clear());
+  document.querySelectorAll('input[data-filter]').forEach(i => i.checked = false);
+  document.querySelectorAll('.chip').forEach(b => b.classList.toggle('active', b.dataset.chip === 'all'));
+  render();
+}
+
+function render() {
+  let list = [...PRODUCTS];
+  if (state.filters.concern.size) list = list.filter(p => state.filters.concern.has(p.concern));
+  if (state.filters.category.size) list = list.filter(p => state.filters.category.has(p.category));
+  if (state.filters.price.size) {
+    list = list.filter(p => [...state.filters.price].some(r => {
+      const [lo, hi] = r.split('-').map(Number);
+      return p.price >= lo && p.price <= hi;
+    }));
+  }
+  if (state.filters.rating.size) {
+    const min = Math.min(...[...state.filters.rating].map(Number));
+    list = list.filter(p => p.rating >= min);
+  }
+  switch (state.sort) {
+    case 'price-asc': list.sort((a,b) => a.price - b.price); break;
+    case 'price-desc': list.sort((a,b) => b.price - a.price); break;
+    case 'rating': list.sort((a,b) => b.rating - a.rating); break;
+    case 'name': list.sort((a,b) => a.name.localeCompare(b.name)); break;
+  }
+  const grid = document.getElementById('shop-grid');
+  const empty = document.getElementById('empty-state');
+  if (!list.length) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+  } else {
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+    grid.innerHTML = list.map(productCardHTML).join('');
+  }
+  document.getElementById('grid-count').textContent = list.length + ' formulation' + (list.length===1?'':'s');
+
+  // Update page head if concern selected
+  if (state.chip && state.chip !== 'all') {
+    document.getElementById('shop-title').textContent = state.chip + '.';
+    document.getElementById('bc-active').textContent = state.chip;
+  } else {
+    document.getElementById('shop-title').textContent = 'All Formulations.';
+    document.getElementById('bc-active').textContent = 'All Formulations';
+  }
+}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your bag — Kamini by Safe &amp; Sure (India)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="cart">
+
+<div id="site-header"></div>
+
+<main class="wide">
+  <section class="page-head">
+    <div class="crumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Your bag</div>
+    <h1>Your <span class="italic">bag.</span></h1>
+    <p class="lede" style="margin-top:14px;" id="cart-summary-line">Review your formulations before checking out.</p>
+  </section>
+
+  <div id="cart-content"></div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="app.js"></script>
+<script>
+function renderCart() {
+  const cart = getCart();
+  const root = document.getElementById('cart-content');
+  if (!cart.length) {
+    root.innerHTML = `
+      <div class="cart-empty">
+        <div style="font-family:var(--serif);font-size:88px;line-height:1;color:var(--mute);">∅</div>
+        <h2 class="h-section serif">Your bag is <span class="italic" style="color:var(--saffron);">empty.</span></h2>
+        <p class="lede" style="text-align:center;max-width:46ch;">Nothing here yet — browse the eleven Kamini formulations and add what your vaidya has recommended.</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+          <a class="btn btn-dark" href="shop.html">Shop all formulations <span class="btn-arrow">→</span></a>
+          <a class="btn btn-outline" href="wishlist.html">View wishlist</a>
+        </div>
+      </div>`;
+    document.getElementById('cart-summary-line').textContent = 'Your bag is currently empty.';
+    return;
+  }
+
+  const totals = cartTotals();
+  document.getElementById('cart-summary-line').textContent = `${totals.count} item${totals.count===1?'':'s'} in your bag · ${inr(totals.subtotal)} subtotal`;
+
+  root.innerHTML = `
+    <div class="cart-layout">
+      <div class="cart-items">
+        ${cart.map(item => {
+          const p = findProduct(item.slug);
+          if (!p) return '';
+          return `
+            <div class="cart-row" data-slug="${p.slug}">
+              <a class="ci-img" href="product.html?slug=${p.slug}"><img src="${p.image}" alt="${p.name}"/></a>
+              <div class="ci-meta">
+                <a class="ci-name" href="product.html?slug=${p.slug}">${p.name}</a>
+                <div class="ci-sub">${p.sub} · ${p.weight}</div>
+                <div class="qty-stepper" style="margin-top:8px;width:fit-content;">
+                  <button onclick="updateQty('${p.slug}', -1)">−</button>
+                  <input type="text" value="${item.qty}" readonly />
+                  <button onclick="updateQty('${p.slug}', 1)">+</button>
+                </div>
+                <div class="ci-actions" style="margin-top:8px;">
+                  <button onclick="toggleWishlist('${p.slug}')">♡ Save for later</button>
+                  <button onclick="removeAndRender('${p.slug}')">× Remove</button>
+                </div>
+              </div>
+              <div class="ci-side">
+                <div class="ci-price">${inr(p.price * item.qty)}</div>
+                ${p.was ? `<div style="font-size:12px;color:var(--mute);text-decoration:line-through;">${inr(p.was * item.qty)}</div>` : ''}
+              </div>
+            </div>`;
+        }).join('')}
+        <div style="display:flex;gap:14px;padding-top:28px;flex-wrap:wrap;">
+          <a class="btn btn-outline" href="shop.html">← Continue shopping</a>
+          <button class="btn btn-dark" style="margin-left:auto;" onclick="location.href='checkout.html'">Proceed to checkout →</button>
+        </div>
+      </div>
+
+      <aside class="summary">
+        <h3>Order summary</h3>
+        <div class="sum-row"><span>Subtotal (${totals.count} items)</span><span>${inr(totals.subtotal)}</span></div>
+        ${totals.saved ? `<div class="sum-row" style="color:var(--ink);"><span>You're saving</span><span style="color:var(--saffron);font-weight:700;">− ${inr(totals.saved)}</span></div>` : ''}
+        <div class="sum-row"><span>GST (5%)</span><span>${inr(totals.tax)}</span></div>
+        <div class="sum-row"><span>Shipping</span><span>${totals.shipping === 0 ? 'Free' : inr(totals.shipping)}</span></div>
+        <div class="sum-row total"><span>Total</span><span>${inr(totals.total)}</span></div>
+
+        <div class="promo">
+          <input type="text" id="promo" placeholder="Promo code (try KAMINI10)" />
+          <button onclick="applyPromo()">Apply</button>
+        </div>
+        <div id="promo-msg" style="font-size:12px;color:var(--saffron);font-weight:600;display:none;">✓ Code applied — see below for adjusted total.</div>
+
+        <button class="btn btn-dark" style="width:100%;height:56px;" onclick="location.href='checkout.html'">Checkout · ${inr(totals.total)}</button>
+
+        <div class="note">
+          <p style="margin:0 0 8px;">✓ Free shipping on orders over ₹1000</p>
+          <p style="margin:0 0 8px;">✓ COD available pan India</p>
+          <p style="margin:0;">✓ 7-day return on unopened packs</p>
+        </div>
+      </aside>
+    </div>`;
+}
+
+function updateQty(slug, delta) {
+  const cart = getCart();
+  const item = cart.find(i => i.slug === slug);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  setCart(cart);
+  renderCart();
+}
+
+function removeAndRender(slug) {
+  removeFromCart(slug);
+  renderCart();
+}
+
+function applyPromo() {
+  const code = document.getElementById('promo').value.trim().toUpperCase();
+  const msg = document.getElementById('promo-msg');
+  if (code === 'KAMINI10') {
+    msg.textContent = '✓ KAMINI10 applied — 10% off applied at checkout.';
+    msg.style.display = 'block';
+    msg.style.color = 'var(--saffron)';
+  } else if (code) {
+    msg.textContent = '✗ That code is invalid or expired.';
+    msg.style.display = 'block';
+    msg.style.color = 'var(--sale)';
+  }
+}
+
+renderCart();
+</script>
+</body>
+</html>

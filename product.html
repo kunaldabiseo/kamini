@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="page-title">Product — Kamini by Safe &amp; Sure (India)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="product">
+
+<div id="site-header"></div>
+
+<main class="wide">
+
+  <section class="page-head" style="border-bottom:0;padding-bottom:0;">
+    <div class="crumb"><a href="index.html">Home</a> &nbsp;/&nbsp; <a href="shop.html">Shop</a> &nbsp;/&nbsp; <span id="bc-name">Product</span></div>
+  </section>
+
+  <section class="pdp-wrap" id="pdp"></section>
+
+  <!-- ============== "PAIRS WITH" GRID ============== -->
+  <section class="section-pad" style="padding-top:0;border-top:1px solid var(--hairline);">
+    <div class="sec-head reveal">
+      <div class="left">
+        <span class="eyebrow">Often prescribed alongside</span>
+        <h2 class="h-section serif">Pairs well<br/><span class="italic" style="color:var(--saffron);">with these.</span></h2>
+      </div>
+    </div>
+    <div id="related-grid" class="product-grid"></div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="app.js"></script>
+<script>
+const slug = new URL(location.href).searchParams.get('slug') || 'prabhakar-vati';
+const p = findProduct(slug) || PRODUCTS[0];
+document.getElementById('page-title').textContent = p.name + ' — Kamini by Safe & Sure (India)';
+document.getElementById('bc-name').textContent = p.name;
+
+const stars = '★'.repeat(Math.round(p.rating)) + '<span style="color:var(--mute);">' + '★'.repeat(5 - Math.round(p.rating)) + '</span>';
+const wasHTML = p.was ? `<span class="was">${inr(p.was)}</span>` : '';
+const saveHTML = p.was ? `<span class="save">Save ${inr(p.was - p.price)}</span>` : '';
+
+document.getElementById('pdp').innerHTML = `
+  <div class="pdp-gallery">
+    <div class="pdp-thumbs">
+      <div class="pdp-thumb active"><img src="${p.image}" alt="${p.name} - front"/></div>
+      <div class="pdp-thumb"><img src="${p.image}" alt="${p.name} - angle" style="transform:scaleX(-1);"/></div>
+      <div class="pdp-thumb"><img src="${p.image}" alt="${p.name} - detail"/></div>
+      <div class="pdp-thumb"><img src="${p.image}" alt="${p.name} - context" style="transform:rotate(2deg);"/></div>
+    </div>
+    <div class="pdp-main" id="pdp-main"><img src="${p.image}" alt="${p.name}"/></div>
+  </div>
+
+  <div class="pdp-body">
+    <div>
+      <div class="pdp-section-label">Kamini · ${p.concern}</div>
+      <h1 class="pdp-title">${p.name}<br/><span class="italic">${p.hindi}</span></h1>
+    </div>
+    <div class="pdp-meta">
+      <span class="product-stars" style="color:var(--saffron);font-size:14px;">${stars} <b style="color:var(--ink);">${p.rating.toFixed(2)}</b> <span style="color:var(--mute);">· ${p.reviews} reviews</span></span>
+      <span class="badge badge-best">Authentic Ayurveda</span>
+    </div>
+    <p class="lede" style="font-size:16px;max-width:50ch;">${p.short}</p>
+
+    <div class="pdp-price">
+      <span class="now">${inr(p.price)}</span>
+      ${wasHTML}
+      ${saveHTML}
+    </div>
+
+    <div>
+      <div class="pdp-section-label">Pack size</div>
+      <div class="pdp-size-row">
+        <button class="pdp-size-btn active">${p.weight || '5 gm · 40 tabs'}</button>
+        <button class="pdp-size-btn">3 packs · save 10%</button>
+        <button class="pdp-size-btn">5 packs · save 15%</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="pdp-section-label">Quantity</div>
+      <div class="pdp-qty-row">
+        <div class="qty-stepper">
+          <button onclick="updQty(-1)" aria-label="Decrease">−</button>
+          <input type="text" id="qty" value="1" readonly />
+          <button onclick="updQty(1)" aria-label="Increase">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdp-buy-row">
+      <button class="btn btn-dark" onclick="addToCartAndStay()">Add to bag · ${inr(p.price)}</button>
+      <button class="btn btn-gold" onclick="buyNow()">Buy now <span class="btn-arrow">→</span></button>
+    </div>
+
+    <div class="pdp-trust">
+      <div class="t"><b>Free</b><small>Shipping over ₹1000</small></div>
+      <div class="t"><b>GMP</b><small>Mfg. Lic. 625-Ayu</small></div>
+      <div class="t"><b>COD</b><small>Available pan India</small></div>
+    </div>
+
+    <div class="pdp-accordion" style="margin-top:24px;">
+      <div class="pdp-acc-item open">
+        <button class="pdp-acc-head" onclick="this.parentElement.classList.toggle('open')">Indications &amp; Uses</button>
+        <div class="pdp-acc-body">
+          <ul>${(p.uses || []).map(u => '<li>' + u + '</li>').join('')}</ul>
+        </div>
+      </div>
+      <div class="pdp-acc-item">
+        <button class="pdp-acc-head" onclick="this.parentElement.classList.toggle('open')">Dosage &amp; Administration</button>
+        <div class="pdp-acc-body"><p>${p.dosage}</p></div>
+      </div>
+      <div class="pdp-acc-item">
+        <button class="pdp-acc-head" onclick="this.parentElement.classList.toggle('open')">Ingredients</button>
+        <div class="pdp-acc-body"><p>${p.ingredients}</p></div>
+      </div>
+      <div class="pdp-acc-item">
+        <button class="pdp-acc-head" onclick="this.parentElement.classList.toggle('open')">Caution &amp; Storage</button>
+        <div class="pdp-acc-body"><p>${p.caution}</p><p style="margin-top:8px;">Store in a cool, dry place, away from direct sunlight. Keep the bottle tightly closed after use.</p></div>
+      </div>
+      <div class="pdp-acc-item">
+        <button class="pdp-acc-head" onclick="this.parentElement.classList.toggle('open')">Shipping &amp; Returns</button>
+        <div class="pdp-acc-body">
+          <p>Free shipping pan-India on orders over ₹1000. Dispatched within 24 hours.
+          Sealed Kamini packs may be returned within 7 days of delivery if unopened.
+          See our <a href="refund-policy.html">refund policy</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+
+// Thumb click → swap main image / variation
+document.querySelectorAll('.pdp-thumb').forEach(thumb => {
+  thumb.addEventListener('click', () => {
+    document.querySelectorAll('.pdp-thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    const img = thumb.querySelector('img');
+    document.querySelector('#pdp-main img').style.transform = img.style.transform || 'none';
+  });
+});
+
+// Size buttons
+document.querySelectorAll('.pdp-size-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pdp-size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+function updQty(d) {
+  const el = document.getElementById('qty');
+  el.value = Math.max(1, (parseInt(el.value)||1) + d);
+}
+
+function addToCartAndStay() {
+  const qty = parseInt(document.getElementById('qty').value) || 1;
+  addToCart(slug, qty);
+}
+function buyNow() {
+  const qty = parseInt(document.getElementById('qty').value) || 1;
+  addToCart(slug, qty);
+  setTimeout(() => location.href = 'checkout.html', 600);
+}
+
+// Related (same concern minus self, fall back to other bestsellers)
+let related = PRODUCTS.filter(x => x.concern === p.concern && x.slug !== p.slug);
+if (related.length < 4) {
+  related = related.concat(PRODUCTS.filter(x => x.slug !== p.slug && !related.includes(x))).slice(0, 4);
+}
+document.getElementById('related-grid').innerHTML = related.slice(0, 4).map(productCardHTML).join('');
+</script>
+</body>
+</html>

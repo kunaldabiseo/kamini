@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My account — Kamini by Safe &amp; Sure (India)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="account">
+
+<div id="site-header"></div>
+
+<main class="wide">
+  <section class="page-head">
+    <div class="crumb"><a href="index.html">Home</a> &nbsp;/&nbsp; My account</div>
+    <h1>Welcome back, <span class="italic">Customer.</span></h1>
+  </section>
+
+  <div class="account-layout">
+    <aside class="account-nav">
+      <a href="#orders" class="active" onclick="switchTab(event, 'orders')">Order history</a>
+      <a href="#profile" onclick="switchTab(event, 'profile')">Profile</a>
+      <a href="#addresses" onclick="switchTab(event, 'addresses')">Addresses</a>
+      <a href="wishlist.html">Wishlist</a>
+      <a href="#preferences" onclick="switchTab(event, 'preferences')">Preferences</a>
+      <a href="#logout" onclick="event.preventDefault();alert('You are signed out (demo).');">Sign out</a>
+    </aside>
+
+    <div>
+      <!-- Orders -->
+      <section data-tab="orders">
+        <div class="account-card">
+          <h3>Recent orders</h3>
+          <div id="orders-list">Loading…</div>
+        </div>
+      </section>
+
+      <!-- Profile -->
+      <section data-tab="profile" style="display:none;">
+        <div class="account-card">
+          <h3>Personal details</h3>
+          <div class="field-row">
+            <div class="field"><label>First name</label><input value="Demo" /></div>
+            <div class="field"><label>Last name</label><input value="Customer" /></div>
+          </div>
+          <div class="field"><label>Email</label><input value="customer@example.com" /></div>
+          <div class="field"><label>Phone</label><input value="+91 98xxx xxxxx" /></div>
+          <button class="btn btn-dark" style="margin-top:8px;" onclick="alert('Profile saved (demo).')">Save changes</button>
+        </div>
+      </section>
+
+      <!-- Addresses -->
+      <section data-tab="addresses" style="display:none;">
+        <div class="account-card">
+          <h3>Default shipping address</h3>
+          <p style="font-family:var(--serif);font-size:18px;line-height:1.5;margin:0;">
+            Demo Customer<br/>
+            12, MG Road, Indiranagar<br/>
+            Bengaluru, Karnataka — 560038<br/>
+            +91 98xxx xxxxx
+          </p>
+          <button class="btn btn-outline" style="margin-top:18px;height:42px;" onclick="alert('Edit address (demo).')">Edit address</button>
+        </div>
+        <div class="account-card">
+          <h3>Add new address</h3>
+          <button class="btn btn-dark" style="height:42px;" onclick="alert('New address form (demo).')">+ Add address</button>
+        </div>
+      </section>
+
+      <!-- Preferences -->
+      <section data-tab="preferences" style="display:none;">
+        <div class="account-card">
+          <h3>Communication preferences</h3>
+          <label style="display:flex;align-items:center;gap:12px;padding:10px 0;"><input type="checkbox" checked/> Order updates by email</label>
+          <label style="display:flex;align-items:center;gap:12px;padding:10px 0;"><input type="checkbox" checked/> Order updates by WhatsApp</label>
+          <label style="display:flex;align-items:center;gap:12px;padding:10px 0;"><input type="checkbox"/> Wellness newsletter (monthly)</label>
+          <label style="display:flex;align-items:center;gap:12px;padding:10px 0;"><input type="checkbox"/> Promotional offers</label>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="app.js"></script>
+<script>
+function switchTab(e, name) {
+  if (e) e.preventDefault();
+  document.querySelectorAll('.account-nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + name));
+  document.querySelectorAll('[data-tab]').forEach(s => s.style.display = s.dataset.tab === name ? 'block' : 'none');
+}
+
+let orders = [];
+try { orders = JSON.parse(localStorage.getItem('kamini_orders') || '[]'); } catch {}
+const ol = document.getElementById('orders-list');
+if (!orders.length) {
+  ol.innerHTML = `
+    <p style="color:var(--mute);font-family:var(--italic);font-style:italic;font-size:18px;">No orders yet.</p>
+    <a class="btn btn-dark" href="shop.html" style="margin-top:14px;">Place your first order →</a>`;
+} else {
+  ol.innerHTML = orders.map(o => {
+    const d = new Date(o.placed);
+    const eta = new Date(d.getTime() + 5 * 24 * 3600 * 1000);
+    const fmt = (x) => x.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+    const status = ['Order placed', 'Packed at Bengaluru', 'In transit', 'Out for delivery'][Math.min(3, Math.floor((Date.now() - d.getTime()) / (24*3600*1000)))] || 'Order placed';
+    return `
+      <div style="border-top:1px solid var(--hairline);padding:22px 0;">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:baseline;">
+          <div>
+            <div style="font-family:var(--serif);font-size:22px;">${o.id}</div>
+            <div style="font-size:12px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;">Placed ${fmt(d)} · ETA ${fmt(eta)}</div>
+          </div>
+          <div>
+            <span class="badge badge-best">${status}</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin:18px 0 6px;flex-wrap:wrap;">
+          ${o.items.map(i => {
+            const p = findProduct(i.slug); if (!p) return '';
+            return `<a href="product.html?slug=${p.slug}" style="display:flex;gap:10px;align-items:center;background:var(--cream);padding:8px;text-decoration:none;">
+              <img src="${p.image}" alt="${p.name}" style="width:50px;height:60px;object-fit:contain;"/>
+              <div>
+                <div style="font-family:var(--serif);font-size:14px;">${p.name}</div>
+                <div style="font-size:11px;color:var(--mute);">${i.qty} × ${inr(p.price)}</div>
+              </div>
+            </a>`;
+          }).join('')}
+        </div>
+        <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--hairline);">
+          <span style="font-size:13px;">Total ${o.totals.count} items</span>
+          <span style="font-family:var(--serif);font-size:18px;">${inr(o.totals.total)}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
