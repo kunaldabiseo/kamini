@@ -823,7 +823,8 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; margin: 0; letter-
     grid-template-columns: repeat(1, 1fr);
   }
   .gh-0987 {
-    line-height: 70px;
+    line-height: 63px;
+        font-size: 52px;
 }
 .okiuy-23568{aspect-ratio:1/1;}
 .okiuy-23568 img{padding:0!important;}
@@ -845,4 +846,13 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; margin: 0; letter-
 .shop-chips{top: 10px;}
 .oiiyty-1235{display: none;}
 .pqiy-1235 .reveal{grid-template-columns: repeat(1, 1fr)!important;}
+.gh-0987 .hero-floating-italic{
+    letter-spacing: -.01em;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 52px;
+    color: #1a1714;
 }
+
+}
+
